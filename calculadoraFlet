@@ -1,0 +1,42 @@
+import flet as ft
+
+def main(page: ft.Page):
+    page.title = "Calculadora con Flet"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+
+    # Campos de entrada
+    num1 = ft.TextField(label="Número 1", width=150)
+    num2 = ft.TextField(label="Número 2", width=150)
+    resultado = ft.Text(value="", size=20)
+
+    # Funciones de operación
+    def operar(e, tipo):
+        try:
+            a = float(num1.value)
+            b = float(num2.value)
+            if tipo == "suma":
+                res = a + b
+            elif tipo == "resta":
+                res = a - b
+            elif tipo == "multiplicación":
+                res = a * b
+            elif tipo == "división":
+                res = a / b if b != 0 else "Error: división entre cero"
+            resultado.value = f"Resultado: {res}"
+        except:
+            resultado.value = "Error: ingresa números válidos"
+        page.update()
+
+    # Botones
+    page.add(
+        ft.Row([num1, num2], alignment=ft.MainAxisAlignment.CENTER),
+        ft.Row([
+            ft.ElevatedButton("Sumar", on_click=lambda e: operar(e, "suma")),
+            ft.ElevatedButton("Restar", on_click=lambda e: operar(e, "resta")),
+            ft.ElevatedButton("Multiplicar", on_click=lambda e: operar(e, "multiplicación")),
+            ft.ElevatedButton("Dividir", on_click=lambda e: operar(e, "división")),
+        ], alignment=ft.MainAxisAlignment.CENTER),
+        resultado
+    )
+
+ft.app(target=main)
